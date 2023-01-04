@@ -1,5 +1,8 @@
 FROM ubuntu:22.04
 
+LABEL maintainer "Aditya Kresna <kresna@gemtek.id>"
+LABEL org.opencontainers.image.source https://github.com/gemtek-indonesia/gi-docker-images
+
 ## Environment Variables
 ENV CARGO_HOME="/usr/local/cargo"
 ENV CARGO_BIN="${CARGO_HOME}/bin"
@@ -9,23 +12,7 @@ ENV CXX="clang"
 ENV DEBIAN_FRONTEND="noninteractive"
 ENV PATH="${CARGO_BIN}${PATH:+:${PATH}}"
 ENV RUSTUP_HOME="/usr/local/rustup"
-
-## Build Args - Required
-ARG CPU_ARCH
-ARG CPU_NAME
-RUN test -n "${CPU_ARCH:?}" && \
-    test -n "${CPU_NAME:?}"
-
-## Build Args - Optional
-ARG RUSTFLAGS_FEATURES
-ARG RUST_HOST="${CPU_ARCH}-unknown-linux-gnu"
-ARG RUST_VERSION_NIGHTLY="nightly-2022-08-12"
-ARG RUST_VERSION_STABLE="1.66.0"
-ARG RUSTFLAGS_OPTIMIZATIONS="-C opt-level=3 -C codegen-units=1 -C link-args=-s"
-ARG RUSTFLAGS_CPU="-C target-cpu=${CPU_NAME}"
-ARG RUSTFLAGS="${RUSTFLAGS_OPTIMIZATIONS} ${RUSTFLAGS_CPU} ${RUSTFLAGS_FEATURES}"
-ARG TZ="Etc/UTC"
-ARG WASMTIME_VERSION="4.0.0"
+ENV TZ="Etc/UTC"
 
 ## Bases
 RUN apt-get update && \
@@ -52,6 +39,8 @@ RUN apt-get update && \
     libbz2-dev \
     libcurl4-openssl-dev \
     libelf-dev \
+    libfuse-dev \
+    libfuse3-dev \
     libgpg-error-dev \
     libgpgme-dev \
     liblzma-dev \
@@ -116,6 +105,22 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+## Build Args - Required
+ARG CPU_ARCH
+ARG CPU_NAME
+RUN test -n "${CPU_ARCH:?}" && \
+    test -n "${CPU_NAME:?}"
+
+## Build Args - Optional
+ARG RUSTFLAGS_FEATURES
+ARG RUST_HOST="${CPU_ARCH}-unknown-linux-gnu"
+ARG RUST_VERSION_NIGHTLY="nightly-2022-08-12"
+ARG RUST_VERSION_STABLE="1.66.0"
+ARG RUSTFLAGS_OPTIMIZATIONS="-C opt-level=3 -C codegen-units=1 -C link-args=-s"
+ARG RUSTFLAGS_CPU="-C target-cpu=${CPU_NAME}"
+ARG RUSTFLAGS="${RUSTFLAGS_OPTIMIZATIONS} ${RUSTFLAGS_CPU} ${RUSTFLAGS_FEATURES}"
+ARG WASMTIME_VERSION="4.0.0"
+
 ## Rust
 RUN curl https://sh.rustup.rs -sSf | sh -s -- \
     -y \
@@ -147,6 +152,7 @@ ENV SCCACHE_CACHE_SIZE="32G"
 ENV SCCACHE_DIR="/builder/cache"
 RUN >&2 echo "Building builder utilities with \"${RUSTFLAGS}\""
 RUN cargo install --locked \
+    cargo-chef \
     cargo-deny \
     cargo-dylint \
     cargo-hack \
