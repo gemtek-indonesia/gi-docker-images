@@ -4,10 +4,12 @@ ARM_CPUS	:=	cortex-a55 cortex-a76 neoverse-n1
 CPU_FEATS	:=	"-C target-feature=+neon,+aes,+sha2,+fp16"
 RECIPE_BS	:=	$(addprefix native-aarch64-bs-,$(ARM_CPUS))
 
-.PHONY: all ${RECIPE_BS}
-.ONESHELL: all ${RECIPE_BS}
+.PHONY: all native-aarch64-bs ${RECIPE_BS}
+.ONESHELL: all native-aarch64-bs ${RECIPE_BS}
 
 all: | ${RECIPE_BS}
+
+native-aarch64-bs: | ${RECIPE_BS}
 
 $(RECIPE_BS):
 	export CURRENT_CPU=$(strip $(subst native-aarch64-bs-,,$@))
