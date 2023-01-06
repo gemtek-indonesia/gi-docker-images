@@ -1,6 +1,6 @@
 MAKEFLAGS	+=	--silent --jobs 1
-TAG_PREFIX	:=	ghcr.io/gemtek-indonesia
 ARM_CPUS	:=	cortex-a55 cortex-a76 neoverse-n1
+TAG_PREFIX	:=	ghcr.io/gemtek-indonesia
 CPU_FEATS	:=	"-C target-feature=+neon,+aes,+sha2,+fp16"
 RECIPE_BS	:=	$(addprefix native-aarch64-bs-,$(ARM_CPUS))
 REGISTRY_BS	:=	$(addprefix push-native-aarch64-bs-,$(ARM_CPUS))

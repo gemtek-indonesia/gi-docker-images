@@ -7,14 +7,14 @@ on:
     branches:
       - main
     paths:
+      - .github/workflows/**
       - native/builder-substrate.Dockerfile
+      - Makefile
 
 jobs:
   build-push:
     if: github.event.pull_request.merged == true
-    runs-on:
-      - self-hosted
-      - epoch-arm64
+    runs-on: [self-hosted, Linux, ARM64, epoch-arm64]
     steps:
       - uses: actions/checkout@v3
       - name: Build Docker Image
