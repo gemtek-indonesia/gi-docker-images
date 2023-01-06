@@ -8,7 +8,7 @@ on:
       - main
     paths:
       - .github/workflows/**
-      - native/builder-substrate.Dockerfile
+      - native/**
       - Makefile
 
 jobs:
@@ -21,7 +21,7 @@ jobs:
         run: |
 
           # Build the images
-          make native-aarch64-bs
+          make worker-native-aarch64-bs
 
           # Login for images push
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
