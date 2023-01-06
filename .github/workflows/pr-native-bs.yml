@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - .github/workflows/**
-      - native/builder-substrate.Dockerfile
+      - native/**
       - Makefile
 
 jobs:
@@ -15,4 +15,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Test Build Docker Image
-        run: make native-aarch64-bs
+        run: make worker-native-aarch64-bs
