@@ -24,10 +24,10 @@ jobs:
           make worker-native-aarch64-bs
 
           # Login for images push
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          echo ${{ secrets.DANGER_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
           # Push images
           make push-native-aarch64-bs
 
           # Delete all dangling packages org-wide, this is because this repo has epoch worker!
-          gi-gh-container-cleaner --organization=${{ github.repository_owner }} --pat=${{ secrets.GITHUB_TOKEN }}
+          gi-gh-container-cleaner --organization=${{ github.repository_owner }} --pat=${{ secrets.DANGER_TOKEN }}
