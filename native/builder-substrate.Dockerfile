@@ -1,8 +1,5 @@
 FROM ubuntu:22.04
 
-LABEL maintainer "Aditya Kresna <kresna@gemtek.id>"
-LABEL org.opencontainers.image.source https://github.com/gemtek-indonesia/gi-docker-images
-
 ## Environment Variables
 ENV CARGO_HOME="/usr/local/cargo"
 ENV CARGO_BIN="${CARGO_HOME}/bin"
@@ -110,6 +107,10 @@ ARG CPU_ARCH
 ARG CPU_NAME
 RUN test -n "${CPU_ARCH:?}" && \
     test -n "${CPU_NAME:?}"
+
+LABEL maintainer "Aditya Kresna <kresna@gemtek.id>"
+LABEL org.opencontainers.image.source "https://github.com/gemtek-indonesia/gi-docker-images"
+LABEL org.opencontainers.image.description "This image is used to build Parity's Substrate based chain for `${CPU_ARCH}-${CPU_NAME}`"
 
 ## Build Args - Optional
 ARG RUSTFLAGS_FEATURES

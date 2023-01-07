@@ -1,12 +1,7 @@
 ## Build Args - Metavariant
 ARG BASE_IMAGE_NAME
-ARG CPU_ARCH_ALT
-ARG RUNNER_VER="2.300.2"
 
 FROM ${BASE_IMAGE_NAME}
-
-LABEL maintainer "Aditya Kresna <kresna@gemtek.id>"
-LABEL org.opencontainers.image.source https://github.com/gemtek-indonesia/gi-docker-images
 
 ## Bases
 RUN apt-get update && \
@@ -21,9 +16,15 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 ## Local argument from Metavariant args
-ARG RUNNER_VER=${RUNNER_VER}
-ARG CPU_ARCH_ALT=${CPU_ARCH_ALT}
+ARG CPU_ARCH
+ARG CPU_ARCH_ALT
+ARG CPU_NAME
+ARG RUNNER_VER="2.300.2"
 ENV RUNNER_ALLOW_RUNASROOT="1"
+
+LABEL maintainer "Aditya Kresna <kresna@gemtek.id>"
+LABEL org.opencontainers.image.source "https://github.com/gemtek-indonesia/gi-docker-images"
+LABEL org.opencontainers.image.description "This is a Github Action version of Parity's Substrate Builder for `${CPU_ARCH}-${CPU_NAME}`"
 
 ## Github Action Runner
 WORKDIR /builder/ghrunner
