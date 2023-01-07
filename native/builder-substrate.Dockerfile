@@ -108,10 +108,6 @@ ARG CPU_NAME
 RUN test -n "${CPU_ARCH:?}" && \
     test -n "${CPU_NAME:?}"
 
-LABEL maintainer "Aditya Kresna <kresna@gemtek.id>"
-LABEL org.opencontainers.image.source "https://github.com/gemtek-indonesia/gi-docker-images"
-LABEL org.opencontainers.image.description "This image is used to build Parity's Substrate based chain for `${CPU_ARCH}-${CPU_NAME}`"
-
 ## Build Args - Optional
 ARG RUSTFLAGS_FEATURES
 ARG RUST_HOST="${CPU_ARCH}-unknown-linux-gnu"
@@ -183,3 +179,7 @@ RUN echo "\n** Rust **" && \
     gcc -v && \
     echo "\n** LLVM **" && \
     clang -v && echo ""
+
+LABEL maintainer "Aditya Kresna <kresna@gemtek.id>"
+LABEL org.opencontainers.image.source "https://github.com/gemtek-indonesia/gi-docker-images"
+LABEL org.opencontainers.image.description "This image is used to build Parity's Substrate based chain for `${CPU_ARCH}-${CPU_NAME}`"
