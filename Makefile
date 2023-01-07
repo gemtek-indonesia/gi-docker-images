@@ -33,7 +33,6 @@ $(BS_IMAGES):
 
 $(BS_WORKERS): | ${BS_IMAGES}
 	export CURRENT_CPU="$(strip $(subst worker-native-aarch64-bs-,,$@))"
-	export CPU_ARCH_ALT="arm64"
 	export IMAGE_PREFIX="${TAG_PREFIX}/native-aarch64-$${CURRENT_CPU}"
 	export BS_TAG="$${IMAGE_PREFIX}:builder-substrate"
 	export CI_TAG="$${IMAGE_PREFIX}:ci-builder-substrate"
@@ -41,12 +40,14 @@ $(BS_WORKERS): | ${BS_IMAGES}
 	docker build \
 		-t $${CI_TAG} \
 		-f native/builder-substrate-gh.Dockerfile \
-		--build-arg CPU_ARCH_ALT=$${CPU_ARCH_ALT} \
 		--build-arg BASE_IMAGE_NAME=$${BS_TAG} \
+		--build-arg CPU_ARCH_ALT="arm64" \
+		--build-arg CPU_ARCH="aarch64" \
+		--build-arg CPU_NAME=$${CURRENT_CPU} \
 		--build-arg RUNNER_VER=${VER_WORKERS} \
 		native/
 
-$(BS_REGISTRY):
+$(BS_REGISTRY): | $(BS_WORKERS)
 	export CURRENT_CPU=$(strip $(subst push-native-aarch64-bs-,,$@))
 	export IMAGE_PREFIX="${TAG_PREFIX}/native-aarch64-$${CURRENT_CPU}"
 	export BS_TAG="$${IMAGE_PREFIX}:builder-substrate"
