@@ -19,8 +19,12 @@ RUN apt-get update && \
 ARG CPU_ARCH
 ARG CPU_ARCH_ALT
 ARG CPU_NAME
-ARG RUNNER_VER="2.300.2"
+ARG RUNNER_VER
 ENV RUNNER_ALLOW_RUNASROOT="1"
+RUN test -n "${CPU_ARCH:?}" && \
+    test -n "${CPU_ARCH_ALT:?}" && \
+    test -n "${CPU_NAME:?}" && \
+    test -n "${RUNNER_VER:?}"
 
 ## Github Action Runner
 WORKDIR /builder/ghrunner

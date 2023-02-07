@@ -162,11 +162,11 @@ RUN cargo install --locked \
     dylint-link \
     wasm-gc \
     wasm-pack && \
-    cargo install --version 0.2.73 wasm-bindgen-cli && \
+    cargo install --version 0.2.84 wasm-bindgen-cli && \
     cargo install --locked websocat --features="seqpacket crypto_peer prometheus_peer" && \
     cargo install --locked wasmtime-cli --features="pooling-allocator component-model" && \
-    cargo install --locked --git https://github.com/paritytech/diener --rev 6497d6a && \
-    cargo install --locked --git https://github.com/chevdor/subwasm --tag v0.16.1 && \
+    cargo install --locked --git https://github.com/paritytech/diener --rev c201fa1 && \
+    cargo install --locked --git https://github.com/chevdor/subwasm --tag v0.18.0 && \
     cargo install --locked cargo-contract && \
     rm -rf ${CARGO_HOME}/registry ${CARGO_HOME}/git ${SCCACHE_DIR} && \
     rustup toolchain remove nightly-2022-06-30 && \
