@@ -53,6 +53,7 @@ RUN apt-get update && \
     libxml2-dev \
     libyaml-dev \
     libzstd-dev \
+    lsb-release \
     make \
     meson \
     nasm \
@@ -66,6 +67,7 @@ RUN apt-get update && \
     python3-dev \
     python3-pip \
     python3-wheel \
+    software-properties-common \
     tzdata \
     unzip \
     wabt \
