@@ -105,14 +105,16 @@ RUN apt-get update && \
 ## Build Args - Required
 ARG CPU_ARCH
 ARG CPU_NAME
+ARG RUST_VERSION_NIGHTLY
+ARG RUST_VERSION_STABLE
 RUN test -n "${CPU_ARCH:?}" && \
-    test -n "${CPU_NAME:?}"
+    test -n "${CPU_NAME:?}" && \
+    test -n "${RUST_VERSION_NIGHTLY:?}" && \
+    test -n "${RUST_VERSION_STABLE:?}"
 
 ## Build Args - Optional
 ARG RUSTFLAGS_FEATURES
 ARG RUST_HOST="${CPU_ARCH}-unknown-linux-gnu"
-ARG RUST_VERSION_NIGHTLY="nightly-2022-08-12"
-ARG RUST_VERSION_STABLE="1.66.1"
 ARG RUSTFLAGS_OPTIMIZATIONS="-C opt-level=3 -C codegen-units=1 -C link-args=-s"
 ARG RUSTFLAGS_CPU="-C target-cpu=${CPU_NAME}"
 ARG RUSTFLAGS="${RUSTFLAGS_OPTIMIZATIONS} ${RUSTFLAGS_CPU} ${RUSTFLAGS_FEATURES}"
