@@ -2,10 +2,12 @@ MAKEFLAGS	+=	--silent --jobs 1
 ARM_CPUS	:=	cortex-a55 cortex-a76 neoverse-n1
 TAG_PREFIX	:=	ghcr.io/gemtek-indonesia
 CPU_FEATS	:=	"-C target-feature=+neon,+aes,+sha2,+fp16"
-VER_WORKERS	:=	"2.300.2"
+VER_WORKERS	:=	"2.301.1"
 BS_IMAGES	:=	$(addprefix native-aarch64-bs-,$(ARM_CPUS))
 BS_WORKERS	:=	$(addprefix worker-native-aarch64-bs-,$(ARM_CPUS))
 BS_REGISTRY	:=	$(addprefix push-native-aarch64-bs-,$(ARM_CPUS))
+RS_NIGHTLY	:=  "nightly-2022-11-15"
+RS_STABLE	:=	"1.67.0"
 
 .PHONY: all native-aarch64-bs ${BS_IMAGES} ${BS_WORKER} ${BS_REGISTRY}
 .ONESHELL: all native-aarch64-bs ${BS_IMAGES} ${BS_WORKER} ${BS_REGISTRY}
@@ -29,6 +31,8 @@ $(BS_IMAGES):
 		--build-arg CPU_ARCH="aarch64" \
 		--build-arg CPU_NAME=$${CURRENT_CPU} \
 		--build-arg RUSTFLAGS_FEATURES=${CPU_FEATS} \
+		--build-arg RUST_VERSION_NIGHTLY=${RS_NIGHTLY} \
+		--build-arg RUST_VERSION_STABLE=${RS_STABLE} \
 		native/
 
 $(BS_WORKERS): | ${BS_IMAGES}

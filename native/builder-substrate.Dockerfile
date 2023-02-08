@@ -53,6 +53,7 @@ RUN apt-get update && \
     libxml2-dev \
     libyaml-dev \
     libzstd-dev \
+    lsb-release \
     make \
     meson \
     nasm \
@@ -66,6 +67,7 @@ RUN apt-get update && \
     python3-dev \
     python3-pip \
     python3-wheel \
+    software-properties-common \
     tzdata \
     unzip \
     wabt \
@@ -102,17 +104,30 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+## LLVM 15.0.7
+RUN wget https://apt.llvm.org/llvm.sh && \
+    chmod +x llvm.sh && \
+    ./llvm.sh 15 all && \
+    apt-get update && \
+    apt-get upgrade -y && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm llvm.sh
+
 ## Build Args - Required
 ARG CPU_ARCH
 ARG CPU_NAME
+ARG RUST_VERSION_NIGHTLY
+ARG RUST_VERSION_STABLE
 RUN test -n "${CPU_ARCH:?}" && \
-    test -n "${CPU_NAME:?}"
+    test -n "${CPU_NAME:?}" && \
+    test -n "${RUST_VERSION_NIGHTLY:?}" && \
+    test -n "${RUST_VERSION_STABLE:?}"
 
 ## Build Args - Optional
 ARG RUSTFLAGS_FEATURES
 ARG RUST_HOST="${CPU_ARCH}-unknown-linux-gnu"
-ARG RUST_VERSION_NIGHTLY="nightly-2022-08-12"
-ARG RUST_VERSION_STABLE="1.66.1"
 ARG RUSTFLAGS_OPTIMIZATIONS="-C opt-level=3 -C codegen-units=1 -C link-args=-s"
 ARG RUSTFLAGS_CPU="-C target-cpu=${CPU_NAME}"
 ARG RUSTFLAGS="${RUSTFLAGS_OPTIMIZATIONS} ${RUSTFLAGS_CPU} ${RUSTFLAGS_FEATURES}"
@@ -160,11 +175,11 @@ RUN cargo install --locked \
     dylint-link \
     wasm-gc \
     wasm-pack && \
-    cargo install --version 0.2.73 wasm-bindgen-cli && \
+    cargo install --version 0.2.84 wasm-bindgen-cli && \
     cargo install --locked websocat --features="seqpacket crypto_peer prometheus_peer" && \
     cargo install --locked wasmtime-cli --features="pooling-allocator component-model" && \
-    cargo install --locked --git https://github.com/paritytech/diener --rev 6497d6a && \
-    cargo install --locked --git https://github.com/chevdor/subwasm --tag v0.16.1 && \
+    cargo install --locked --git https://github.com/paritytech/diener --rev c201fa1 && \
+    cargo install --locked --git https://github.com/chevdor/subwasm --tag v0.18.0 && \
     cargo install --locked cargo-contract && \
     rm -rf ${CARGO_HOME}/registry ${CARGO_HOME}/git ${SCCACHE_DIR} && \
     rustup toolchain remove nightly-2022-06-30 && \
