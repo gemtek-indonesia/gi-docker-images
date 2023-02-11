@@ -6,8 +6,8 @@ VER_WORKERS	:=	"2.301.1"
 BS_IMAGES	:=	$(addprefix native-aarch64-bs-,$(ARM_CPUS))
 BS_WORKERS	:=	$(addprefix worker-native-aarch64-bs-,$(ARM_CPUS))
 BS_REGISTRY	:=	$(addprefix push-native-aarch64-bs-,$(ARM_CPUS))
-RS_NIGHTLY	:=  "nightly-2022-11-15"
-RS_STABLE	:=	"1.67.0"
+RS_NIGHTLY	:=	"nightly-2023-02-10"
+RS_STABLE	:=	"1.67.1"
 
 .PHONY: all native-aarch64-bs ${BS_IMAGES} ${BS_WORKER} ${BS_REGISTRY}
 .ONESHELL: all native-aarch64-bs ${BS_IMAGES} ${BS_WORKER} ${BS_REGISTRY}
