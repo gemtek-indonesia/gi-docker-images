@@ -1,0 +1,6 @@
+[project]
+name = "gtid-gi-docker-images"
+slug = "gtid-gi-docker-images"
+
+[amem]
+server = "https://amem.flusci.org"
